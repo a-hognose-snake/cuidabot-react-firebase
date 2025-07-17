@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { getAllUsers, getAllSurveyResponses } from '../services/firestoreService';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Users, FileText, Star, Edit, Phone, MapPin, Newspaper } from 'lucide-react';
+import { Users, FileText, Star, Edit, Phone, MapPin, Newspaper, Menu, X } from 'lucide-react'; // Added Menu and X icons
 import Chatbot from '../components/chatbot/Chatbot';
 import ChatbotIcon from '../components/chatbot/ChatbotIcon';
 
@@ -53,6 +53,7 @@ const userBlocks = [
   }
 ];
 
+// --- UserDashboard Component ---
 const UserDashboard = ({ currentUser }) => (
   <>
     <div className="dashboard-header">
@@ -86,7 +87,7 @@ const UserDashboard = ({ currentUser }) => (
 );
 
 
-// --- COMPONENTE AdminDashboard COMPLETAMENTE NUEVO ---
+// --- AdminDashboard Component ---
 const AdminDashboard = () => {
   const [stats, setStats] = useState({
     totalUsers: 0,
@@ -218,38 +219,81 @@ const AdminDashboard = () => {
 };
 
 
+// --- Main DashboardLayout Component ---
 export default function DashboardLayout() {
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
+  const [isNavOpen, setIsNavOpen] = useState(false); // State to control mobile nav visibility
 
+  // Toggle function for the mobile navigation
+  const toggleNav = () => {
+    setIsNavOpen(prev => !prev);
+  };
+
+  // Effect to manage body scroll lock when nav is open/closed
+  useEffect(() => {
+    if (isNavOpen) {
+      document.body.classList.add('nav-open-active'); // Add class to body to prevent scroll
+    } else {
+      document.body.classList.remove('nav-open-active'); // Remove class when nav is closed
+    }
+    // Cleanup function: remove the class when component unmounts
+    return () => {
+      document.body.classList.remove('nav-open-active');
+    };
+  }, [isNavOpen]); // Rerun this effect when isNavOpen changes
+
+  // Handler for logout button
   async function handleLogout() {
     try {
       await logout();
       navigate('/login');
     } catch (err) {
       console.error('Failed to log out', err);
+    } finally {
+      setIsNavOpen(false); // Ensure nav closes after logout attempt
     }
   }
 
+  // Common function to close nav after clicking a link
+  const handleNavLinkClick = () => {
+    setIsNavOpen(false);
+  };
+
   return (
     <div className="dashboard-layout">
+      {/* Optional: Overlay that appears when the mobile nav is open */}
+      {/* This div MUST be outside the <nav> and should cover the whole screen. */}
+      {isNavOpen && <div className="nav-overlay active" onClick={toggleNav}></div>}
+
       <nav className="dashboard-nav">
         <div className="nav-content">
           <div className="nav-brand">
             <ChatbotIcon />
             <span>CuidaBot</span>
           </div>
-          <div className="nav-user-section">
-            <span className="nav-user-email">¡Hola, {currentUser?.email}!</span>
+
+          {/* HAMBURGER/CLOSE BUTTON */}
+          {/* This button will be displayed on mobile sizes only due to CSS */}
+          <button className="nav-toggle" onClick={toggleNav} aria-label={isNavOpen ? "Cerrar menú" : "Abrir menú"}>
+            {isNavOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+          
+          {/* NAVIGATION LINKS CONTAINER */}
+          {/* This div's visibility and layout change based on screen size and isNavOpen state */}
+          <div className={`nav-user-section ${isNavOpen ? 'nav-open' : ''}`}>
+            {/* Display user email only within the opened mobile menu (optional, based on your preference) */}
+            {isNavOpen && <span className="nav-user-email">¡Hola, {currentUser?.email}!</span>}
+
             {currentUser?.role === 'admin' ? (
               <>
-                <Link to="/admin/knowledge" className="nav-link">Chatbot</Link>
-                <Link to="/admin/surveys" className="nav-link">Feedback</Link>
-                <Link to="/admin/faqs" className="nav-link">FAQs</Link> 
-                <Link to="/admin" className="nav-link">Users</Link>
+                <Link to="/admin/knowledge" className="nav-link" onClick={handleNavLinkClick}>Editar Chatbot</Link>
+                <Link to="/admin/surveys" className="nav-link" onClick={handleNavLinkClick}>Ver Encuestas</Link>
+                <Link to="/admin/faqs" className="nav-link" onClick={handleNavLinkClick}>Editar FAQs</Link>
+                <Link to="/admin" className="nav-link" onClick={handleNavLinkClick}>Gestionar Usuarios</Link>
               </>
             ) : (
-              <Link to="/faqs" className="nav-link">Preguntas Frecuentes</Link>
+              <Link to="/faqs" className="nav-link" onClick={handleNavLinkClick}>Preguntas Frecuentes</Link>
             )}
             <button onClick={handleLogout} className="btn btn-secondary">Cerrar sesión</button>
           </div>

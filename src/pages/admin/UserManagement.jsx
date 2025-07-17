@@ -135,7 +135,17 @@ export default function UserManagement() {
                         </button>
                       </>
                     ) : (
-                      <span>No disponible</span>
+                      <>
+                        <select
+                          value={user.role}
+                          onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                          className="role-select"
+                          disabled // Added disabled attribute here
+                        >
+                          <option value="user">Usuario</option>
+                          <option value="admin">Admin</option>
+                        </select>
+                      </>
                     )}
                   </td>
                 </tr>

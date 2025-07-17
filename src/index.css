@@ -39,6 +39,7 @@ body {
   -moz-osx-font-smoothing: grayscale; /* Improves font rendering on Firefox */
   background-color: var(--light-gray);
   color: var(--dark-gray);
+  overflow-x: hidden; /* Prevent horizontal scrollbar from mobile menu slide-out */
 }
 
 /* A more intuitive box-sizing model for all elements. */
@@ -247,6 +248,7 @@ select.form-input {
 /* Main wrapper for the entire authenticated view. */
 .dashboard-layout {
   min-height: 100vh;
+  position: relative; /* Needed for nav-overlay */
 }
 
 /* The top navigation bar. */
@@ -254,6 +256,26 @@ select.form-input {
   background-color: var(--white);
   box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.05); /* Subtle bottom shadow */
   padding: 0 1rem; /* Reduced padding for mobile */
+  position: relative; /* Allow children to be absolutely positioned relative to this */
+  z-index: 1060; /* Ensure nav is always on top */
+}
+
+/* Hamburger menu toggle button */
+.nav-toggle {
+  display: none; /* Hidden by default on desktop */
+  background: none;
+  border: none;
+  color: var(--main-primary);
+  font-size: 1.8rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+  z-index: 1070; /* Ensure toggle is above the nav-user-section when open */
+}
+
+.nav-toggle:hover {
+  background-color: var(--light-gray);
 }
 
 /* Inner container for the nav bar to control its max-width. */
@@ -261,7 +283,7 @@ select.form-input {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 72px;
+  height: 72px; /* Fixed height for the header bar */
   max-width: 1280px;
   margin: 0 auto;
 }
@@ -284,9 +306,10 @@ select.form-input {
 
 /* The right-hand section of the nav bar containing user info and actions. */
 .nav-user-section {
-  display: flex;
+  display: flex; /* Default for desktop */
   align-items: center;
-  gap: 0.5rem; /* Reduced gap for mobile */
+  gap: 0.5rem; /* Space between links */
+  transition: transform 0.3s ease-out; /* Smooth slide-in/out */
 }
 
 .nav-user-email {
@@ -491,6 +514,8 @@ select.form-input {
   max-width: 1024px;
   margin: 2.5rem auto;
   padding: 0 1rem;
+  max-height: calc(100vh - 150px); /* Added max-height and overflow */
+  overflow-y: auto; /* Added max-height and overflow */
 }
 
 .admin-panel-header {
@@ -1116,25 +1141,85 @@ tbody tr:hover {
 /* --- Mobile Devices (up to 768px) --- */
 @media (max-width: 768px) {
   .nav-content {
-    flex-wrap: wrap; /* Allow navbar items to wrap */
-    justify-content: center;
-    height: auto;
-    padding: 0.75rem 0;
+    flex-wrap: nowrap; /* Prevent wrapping for brand and toggle */
+    justify-content: space-between; /* Space out brand and toggle */
+    align-items: center; /* Vertically align */
+    height: 72px; /* Fixed height for the header bar */
+    padding: 0 1rem; /* Adjust padding for mobile */
   }
 
   .nav-brand {
-    width: 100%;
-    justify-content: center;
-    margin-bottom: 0.5rem;
+    width: auto; /* Allow brand to take natural width */
+    margin-bottom: 0; /* Remove bottom margin */
+  }
+
+  .nav-toggle {
+    display: block; /* Show hamburger menu on mobile */
   }
 
   .nav-user-section {
-    width: 100%;
-    justify-content: center;
+    /* Styles for the collapsible menu */
+    position: fixed; /* Fixed position to overlay content */
+    top: 0; /* Align to top of viewport */
+    right: 0; /* Align to right of viewport */
+    width: 280px; /* Width of the mobile menu */
+    max-width: 80vw; /* Prevent it from being too wide on very small screens */
+    height: 100vh; /* Full viewport height */
+    background-color: var(--white); /* White background for the menu */
+    box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1); /* Shadow on the left side */
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align links to the left */
+    padding: 2rem 1.5rem; /* Padding inside the menu */
+    gap: 1.5rem; /* Space between menu items */
+    transform: translateX(100%); /* Initially hide off-screen to the right */
+    transition: transform 0.3s ease-out; /* Smooth slide-in/out transition */
+    z-index: 1050; /* Ensure it's above most content but below modals */
+    /* Add this for mobile: Keep flex display but hide using transform */
+    display: flex; /* Crucial: ensure it's flex on mobile too for layout */
+  }
+
+  .nav-user-section.nav-open {
+    transform: translateX(0); /* Slide in when .nav-open class is present */
   }
 
   .nav-user-email {
-    display: none; /* Hide the email on small screens to save space */
+    display: block; /* Show email in the collapsed menu */
+    width: 100%; /* Take full width */
+    padding-bottom: 1rem; /* Add padding below email */
+    margin-bottom: 1rem; /* Add margin below email */
+    border-bottom: 1px solid var(--medium-gray); /* Separator below email */
+    text-align: left; /* Align text to left */
+    font-size: 1rem; /* Slightly larger font size */
+  }
+
+  .nav-user-section .nav-link {
+    width: 100%; /* Make links take full width in the menu */
+    padding: 0.75rem 1rem; /* Adjust padding for menu links */
+    justify-content: flex-start; /* Align link content to start */
+    border-radius: 0.5rem;
+  }
+
+  /* Optional: Overlay to dim background when menu is open */
+  .nav-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark semi-transparent overlay */
+    z-index: 1000; /* Below the menu, above content */
+    transition: opacity 0.3s ease-out;
+  }
+
+  .nav-overlay.active {
+    display: block;
+    opacity: 1;
+  }
+  
+  /* Additional adjustment for body when nav is open to prevent scrolling main content */
+  body.nav-open-active { /* Class to add to body when nav is open */
+    overflow: hidden;
   }
 
   .dashboard-main {
@@ -1256,7 +1341,7 @@ tbody tr:hover {
 
 .faq-container { /* */
   max-width: 900px; /* */
-  margin:  auto; /* */
+  margin: auto; /* */
 }
 
 .faq-category { /* */
@@ -1286,6 +1371,7 @@ tbody tr:hover {
   border-radius: 0.75rem; /* */
   margin-bottom: 0.5rem; /* */
   overflow: hidden; /* */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Added for hover effect */
 }
 
 .faq-question { /* */
@@ -1303,15 +1389,9 @@ tbody tr:hover {
 }
 
 .faq-question:hover {
-  background-color: var(--white);
-  /* Stronger shadow effect */
-  box-shadow: 0 6px 15px -5px rgba(0, 0, 0, 0.1), 0 0 0 4px rgba(4, 99, 251, 0.25); /* Increased blur and spread, slightly more opaque border highlight */
-  transform: translateY(-3px); /* Lifts the item slightly */
-}
-
-/* Add this to .faq-item for smooth transition on transform */
-.faq-item {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Add transition for transform and box-shadow */
+  background-color: var(--light-gray); /* Changed back to light-gray for consistency with other hovers */
+  box-shadow: 0 6px 15px -5px rgba(0, 0, 0, 0.1), 0 0 0 4px rgba(4, 99, 251, 0.25); /* Stronger shadow */
+  transform: translateY(-3px); /* Subtle lift */
 }
 
 .faq-chevron { /* */
@@ -1334,9 +1414,21 @@ tbody tr:hover {
   line-height: 1.6; /* */
 }
 
-.loading-indicator { /* */
-  text-align: center; /* */
-  padding: 4rem; /* */
-  font-size: 1.25rem; /* */
-  color: var(--text-light); /* */
+/* This rule applies to any button with the 'disabled' attribute, including .btn-icon */
+.btn:disabled {
+  opacity: 0.5; /* Makes it semi-transparent */
+  cursor: not-allowed; /* Changes cursor to a 'no-entry' sign */
+  transform: none; /* Removes any hover transform */
+  box-shadow: none; /* Removes any hover shadow */
+  /* You can add more here if needed, e.g., background-color or border-color */
+  background-color: var(--medium-gray); /* Optional: explicit grey background */
+  color: var(--text-light); /* Optional: dull text/icon color */
+}
+
+/* Add this specific rule for disabled select inputs */
+.role-select:disabled {
+  opacity: 0.6; /* Make it slightly transparent */
+  cursor: not-allowed; /* Indicate it's not interactive */
+  background-color: var(--medium-gray); /* Optional: make background a bit darker */
+  color: var(--text-light); /* Optional: dull the text color */
 }
