@@ -1,0 +1,68 @@
+# =============================
+# 🔥 React + Vite + Firebase .gitignore
+# =============================
+
+# === Logs ===
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# === Dependency Directories ===
+node_modules/
+dist/
+dist-ssr/
+build/
+out/
+.vite/  # Vite cache
+
+# === Firebase Emulator & Debug Logs ===
+.firebase/
+firestore-debug.log
+firebase-debug.log
+
+# === Local Environment Variables ===
+.env
+.env.*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# === Editor Directories & Configs ===
+.vscode/
+!.vscode/extensions.json
+.idea/
+.c9/
+*.sw?
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.iml
+.project
+.classpath
+
+# === OS Generated Files ===
+.DS_Store
+Thumbs.db
+.Trash-*
+.localized
+
+# === Test Coverage ===
+coverage/
+
+# === Docs or Temp Files ===
+docs/
+tmp/
+
+# === Optional Firebase Config (if contains hardcoded keys) ===
+# Uncomment if firebase-config.js contains API keys not managed via .env
+# firebase-config.js
+
+# === Hosting Providers (optional) ===
+.vercel/
+.netlify/

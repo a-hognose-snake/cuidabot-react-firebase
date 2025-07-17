@@ -1,0 +1,1342 @@
+/* =================================================================== */
+/* 1. Google Font Import & CSS Variables
+/* =================================================================== */
+
+/* Imports the 'Inter' font from Google Fonts for a modern look. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* :root contains CSS variables available globally in the application. */
+/* This makes it easy to change the color scheme from one place. */
+:root {
+  /* Primary and accent colors */
+  --main-primary: #0463fb;
+  --accent-secondary: #48C9B0;
+  
+  /* Grayscale palette for backgrounds, borders, and text */
+  --light-gray: #f7f7f8;    /* Used for main page backgrounds */
+  --medium-gray: #e5e7eb;   /* Used for borders and dividers */
+  --dark-gray: #1f2937;     /* Primary text color for high contrast */
+  --text-light: #6b7280;    /* Secondary text color for labels, subtitles */
+  --white: #ffffff;
+  
+  /* State colors for feedback */
+  --error-red: #ef4444;
+  --error-bg: #fee2e2;
+  --increase-green: #10b981; /* For positive statistics */
+  --decrease-red: #f43f5e;   /* For negative statistics */
+}
+
+
+/* =================================================================== */
+/* 2. Global Styles & Resets
+/* =================================================================== */
+
+/* Basic reset and global font settings */
+body {
+  margin: 0; /* Removes default browser margin */
+  font-family: 'Inter', sans-serif; /* Modern font stack with system fallbacks */
+  -webkit-font-smoothing: antialiased; /* Improves font rendering on WebKit browsers */
+  -moz-osx-font-smoothing: grayscale; /* Improves font rendering on Firefox */
+  background-color: var(--light-gray);
+  color: var(--dark-gray);
+}
+
+/* A more intuitive box-sizing model for all elements. */
+/* Padding and border will no longer add to the element's total width/height. */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* =================================================================== */
+/* 3. Material Symbols Base Styles
+/* =================================================================== */
+
+/* These are the recommended base styles for using the Material Symbols font. */
+/* This ensures icons render correctly and consistently across browsers. */
+.material-symbols-rounded {
+  font-family: 'Material Symbols Rounded';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Default icon size */
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+/* =================================================================== */
+/* 4. General Button Styles
+/* =================================================================== */
+
+/* Base styles for all buttons. */
+.btn {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-align: center;
+  display: inline-block;
+  text-decoration: none;
+}
+
+/* Primary action button (e.g., "Log In", "Submit Survey"). */
+.btn-primary {
+  background-color: var(--main-primary);
+  color: var(--white);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.btn-primary:hover {
+  background-color: #0354d6; /* Slightly darker blue */
+  transform: translateY(-2px); /* Subtle lift effect */
+  box-shadow: 0 8px 20px -10px rgba(4, 99, 251, 0.5);
+}
+
+/* Secondary action button (e.g., "Log Out", "Back to Dashboard"). */
+.btn-secondary {
+  background-color: var(--medium-gray);
+  color: var(--dark-gray);
+}
+
+.btn-secondary:hover {
+  background-color: #d1d5db; /* Slightly darker gray */
+}
+
+/* Style for when a button is disabled. */
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+
+/* =================================================================== */
+/* 5. Authentication Page Styles (Login & Signup)
+/* =================================================================== */
+
+/* A flex container to center the authentication card vertically and horizontally. */
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem; /* Reduced padding for mobile */
+}
+
+/* The main card holding the login/signup form. */
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--white);
+  padding: 2rem; /* Reduced padding for mobile */
+  border-radius: 1.5rem; /* Soft, rounded corners */
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  text-align: center;
+}
+
+/* Title styling for "Log In" or "Sign Up". */
+.auth-card h2 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-size: 1.75rem; /* Slightly smaller title for mobile */
+  font-weight: 700;
+}
+
+/* The <form> element itself. */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Space between form elements */
+  text-align: left;
+}
+
+/* The link at the bottom to switch between login and signup. */
+.auth-switch-link {
+  margin-top: 2rem;
+  color: var(--text-light);
+  font-size: 0.875rem;
+}
+
+.auth-switch-link a {
+  color: var(--main-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-switch-link a:hover {
+  text-decoration: underline;
+}
+
+/* The red box that appears when there's a login/signup error. */
+.error-message {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background-color: var(--error-bg);
+  color: var(--error-red);
+  border-radius: 0.75rem;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+
+/* =================================================================== */
+/* 6. General Form Styles (Inputs, Selects, Labels)
+/* =================================================================== */
+
+/* A wrapper for a label and its input field. */
+.form-group {
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--text-light);
+}
+
+/* Styling for text and password input fields. */
+.form-input {
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  border: 1px solid var(--medium-gray);
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  background-color: var(--light-gray);
+  transition: border-color 0.2s, box-shadow 0.2s; /* Smooth transition on focus */
+  -webkit-appearance: none; /* Removes default styling on iOS */
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Highlight effect when an input is focused. */
+.form-input:focus {
+  outline: none; /* Removes default browser outline */
+  border-color: var(--main-primary);
+  box-shadow: 0 0 0 4px rgba(4, 99, 251, 0.15); /* Custom focus ring */
+}
+
+/* --- CUSTOM DROPDOWN ARROW --- */
+/* Target only <select> elements that have the .form-input class. */
+select.form-input {
+  /* An SVG for a chevron down arrow, URL-encoded and embedded directly. */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 3rem; /* Add space on the right so text doesn't overlap the arrow. */
+}
+
+
+/* =================================================================== */
+/* 7. Dashboard Layout & Navigation
+/* =================================================================== */
+
+/* Main wrapper for the entire authenticated view. */
+.dashboard-layout {
+  min-height: 100vh;
+}
+
+/* The top navigation bar. */
+.dashboard-nav {
+  background-color: var(--white);
+  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.05); /* Subtle bottom shadow */
+  padding: 0 1rem; /* Reduced padding for mobile */
+}
+
+/* Inner container for the nav bar to control its max-width. */
+.nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 72px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* The app's logo/name in the nav bar. */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: var(--main-primary);
+  font-size: 1.25rem;
+}
+
+.nav-brand svg {
+  width: 32px;
+  height: 32px;
+  fill: var(--main-primary);
+}
+
+/* The right-hand section of the nav bar containing user info and actions. */
+.nav-user-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Reduced gap for mobile */
+}
+
+.nav-user-email {
+  color: var(--text-light);
+  font-size: 0.875rem;
+}
+
+/* Links within the nav bar, like "Admin Panel". */
+.nav-link {
+  color: var(--dark-gray);
+  font-weight: 500;
+  font-size: 0.875rem;
+  text-decoration: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.2s;
+  white-space: nowrap; /* Prevents link text from wrapping */
+}
+
+.nav-link:hover {
+  background-color: var(--light-gray);
+}
+
+/* Wrapper for the main content area below the nav bar. */
+.dashboard-main {
+  padding: 1.5rem 0; /* Reduced padding for mobile */
+}
+
+/* Inner container for the main content to control its max-width. */
+.main-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem; /* Reduced padding for mobile */
+}
+
+/* Header for the dashboard content (e.g., "Información") */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap; /* Allows items to wrap on small screens */
+    gap: 1rem;
+}
+
+.dashboard-header h1 {
+    margin: 0;
+    font-size: 1.5rem; /* Smaller title on mobile */
+}
+
+.dashboard-header .btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+
+/* =================================================================== */
+/* 8. Dashboard Cards (Admin & User)
+/* =================================================================== */
+
+/* --- Base Card Style (Used by multiple card types) --- */
+/* This is a reusable class to avoid duplicate code. */
+.data-card {
+  background-color: var(--white);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px -4px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--medium-gray);
+}
+
+/* --- Grids for Cards --- */
+/* Base grid for laying out cards. */
+.data-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* Specific grid for the small metric cards. */
+.metrics-grid {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin-bottom: 2.5rem;
+}
+
+/* Specific grid for the larger info cards. */
+.info-grid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* --- Metric Card (Admin) --- */
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  color: var(--text-light);
+}
+
+.metric-title {
+  font-weight: 500;
+}
+
+.metric-icon {
+  color: var(--main-primary);
+}
+
+.metric-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0.5rem 0 0 0;
+}
+
+/* --- Info Card (User) --- */
+.info-card-general {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.info-card-general:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.1);
+}
+
+.info-card-general-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.info-card-icon-main {
+  color: var(--main-primary);
+  flex-shrink: 0;
+}
+
+.info-card-general-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.info-card-general-content {
+  margin: 0;
+  padding-left: calc(28px + 1rem);
+}
+
+.info-card-general-main {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+.info-card-general-details {
+  font-size: 0.875rem;
+  color: var(--text-light);
+  margin: 0;
+}
+
+.info-card-general-link {
+  font-size: 0.875rem;
+  color: var(--main-primary);
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0;
+  transition: text-decoration 0.2s;
+}
+
+.info-card-general-link:hover {
+  text-decoration: underline;
+}
+
+
+/* =================================================================== */
+/* 9. Chart Styles (Admin Dashboard)
+/* =================================================================== */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* One column by default */
+  gap: 1.5rem;
+}
+
+/* On larger screens, show two charts side-by-side */
+@media (min-width: 992px) {
+  .charts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.chart-card h3 {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+
+/* =================================================================== */
+/* 10. Admin Panel - User Management Table
+/* =================================================================== */
+.admin-panel-container {
+  max-width: 1024px;
+  margin: 2.5rem auto;
+  padding: 0 1rem;
+}
+
+.admin-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap; /* Allows items to wrap */
+  gap: 1rem;
+}
+
+.user-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap; /* Allows items to wrap */
+  gap: 1rem;
+}
+
+.admin-panel-header h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.user-panel-header h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.table-wrapper {
+  overflow: hidden;
+  overflow-x: auto;
+  background-color: var(--white);
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.08);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 1rem; /* Reduced padding for mobile */
+  text-align: left;
+  border-bottom: 1px solid var(--medium-gray);
+  vertical-align: middle;
+  white-space: nowrap; /* Prevents text from wrapping in table cells */
+}
+
+thead {
+  background-color: var(--white);
+}
+
+th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background-color: var(--light-gray);
+}
+
+.user-id-text {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  word-break: break-all;
+}
+
+.actions-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-icon:hover {
+  transform: scale(1.1);
+}
+
+.btn-danger {
+  background-color: var(--error-bg);
+  color: var(--error-red);
+}
+
+.btn-danger:hover {
+  background-color: #fecaca; 
+}
+
+.btn-view {
+  background-color: #e0e7ff;
+  color: #4f46e5;
+}
+
+.btn-view:hover {
+  background-color: #c7d2fe;
+}
+
+.role-select {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--medium-gray);
+  border-radius: 0.5rem;
+  background-color: var(--white);
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.role-select:focus {
+  outline: none;
+  border-color: var(--accent-secondary);
+  box-shadow: 0 0 0 4px rgba(72, 201, 176, 0.2);
+}
+
+
+/* =================================================================== */
+/* 11. Satisfaction Survey Page
+/* =================================================================== */
+.survey-container {
+  width: 100%;
+  min-height: 100vh;
+  padding: 1rem; /* Reduced padding for mobile */
+  background-color: var(--light-gray);
+}
+
+.survey-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: var(--white);
+  padding: 1.5rem; /* Reduced padding for mobile */
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.1);
+}
+
+.survey-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.survey-header h2 {
+  font-size: 1.75rem; /* Smaller title on mobile */
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.survey-header p {
+  color: var(--text-light);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.survey-fieldset {
+  border: 1px solid var(--medium-gray);
+  border-radius: 1rem;
+  padding: 1rem; /* Reduced padding for mobile */
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.survey-fieldset legend {
+  font-weight: 600;
+  font-size: 1.125rem; /* Smaller legend on mobile */
+  padding: 0 0.5rem;
+  margin-left: 1rem;
+}
+
+.survey-question {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--medium-gray);
+}
+.survey-fieldset .survey-question:last-child {
+  border-bottom: none;
+}
+
+.survey-question-text {
+  font-size: 1rem;
+  margin: 0 0 1rem 0;
+}
+
+.rating-scale {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem; /* Reduced gap for mobile */
+  justify-content: center;
+}
+
+.rating-button {
+  width: 40px; /* Slightly smaller buttons on mobile */
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--medium-gray);
+  background-color: var(--white);
+  color: var(--text-light);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.rating-button:hover {
+  border-color: var(--main-primary);
+  color: var(--main-primary);
+  transform: scale(1.1);
+}
+
+.rating-button.selected {
+  background-color: var(--main-primary);
+  color: var(--white);
+  border-color: var(--main-primary);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px -4px rgba(4, 99, 251, 0.6);
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    font-weight: 500;
+    color: var(--text-light);
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+}
+
+.back-button:hover {
+    color: var(--dark-gray);
+}
+
+.loading-indicator {
+  text-align: center;
+  padding: 4rem;
+  font-size: 1.25rem;
+  color: var(--text-light);
+}
+
+
+/* =================================================================== */
+/* 12. Chatbot Styles
+/* =================================================================== */
+#chatbot-toggler {
+  position: fixed;
+  bottom: 20px; /* Adjusted for mobile */
+  right: 20px;
+  border: none;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--main-primary);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+.chatbot-container.show-chatbot #chatbot-toggler {
+  transform: rotate(90deg);
+}
+
+#chatbot-toggler span {
+  color: var(--white);
+  position: absolute;
+  font-size: 1.8rem;
+}
+
+#chatbot-toggler span:last-child,
+.chatbot-container.show-chatbot #chatbot-toggler span:first-child {
+  opacity: 0;
+}
+
+.chatbot-container.show-chatbot #chatbot-toggler span:last-child {
+  opacity: 1;
+}
+
+.chatbot-popup {
+  position: fixed;
+  width: 100%; /* Full width on mobile */
+  max-width: 420px; /* Max width on desktop */
+  opacity: 0;
+  right: 20px;
+  bottom: 80px;
+  pointer-events: none;
+  transform: scale(0.2);
+  overflow: hidden;
+  background: var(--white);
+  border-radius: 15px;
+  transform-origin: bottom right;
+  box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
+    0 32px 64px -48px rgba(0, 0, 0, 0.5);
+  transition: all 0.1s ease;
+  z-index: 1000;
+}
+
+.chatbot-container.show-chatbot .chatbot-popup {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.chatbot-popup .chat-header {
+  display: flex;
+  padding: 12px 15px; /* Adjusted padding */
+  align-items: center;
+  background: var(--main-primary);
+  justify-content: space-between;
+}
+
+.header-info {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.header-info svg {
+  width: 35px;
+  height: 35px;
+  flex-shrink: 0;
+  padding: 6px;
+  fill: var(--main-primary);
+  background: var(--white);
+  border-radius: 50%;
+}
+
+.header-info .logo-text {
+  color: var(--white);
+  font-weight: 600;
+  font-size: 1.2rem; /* Adjusted size */
+  letter-spacing: 0.02rem;
+}
+
+.chat-header button.material-symbols-rounded {
+  border: none;
+  height: 40px;
+  width: 40px;
+  color: var(--white);
+  cursor: pointer;
+  font-size: 1.9rem;
+  border-radius: 50%;
+  background: none;
+  transition: 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-header button.material-symbols-rounded:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.chat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Reduced gap */
+  height: 400px; /* Adjusted height */
+  overflow-y: auto;
+  margin-bottom: 70px; /* Adjusted margin */
+  padding: 20px 15px;
+  scrollbar-width: thin;
+  scrollbar-color: #cde0fe transparent;
+}
+
+.chat-body .message {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start; /* Align to top */
+}
+
+.chat-body .message svg {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  padding: 5px;
+  fill: var(--white);
+  align-self: flex-end;
+  margin-bottom: 2px;
+  background: var(--main-primary);
+  border-radius: 50%;
+}
+
+.chat-body .message .message-text {
+  padding: 10px 14px;
+  max-width: 80%; /* Allow more width */
+  font-size: 0.9rem;
+  word-wrap: break-word;
+  white-space: pre-line;
+}
+
+.chat-body .message.error .message-text {
+  color: var(--error-red);
+  background-color: var(--error-bg);
+}
+
+.chat-body .bot-message .message-text {
+  background: #e6efff;
+  border-radius: 13px 13px 13px 3px;
+}
+
+.chat-body .user-message {
+  flex-direction: row-reverse;
+}
+
+.chat-body .user-message .message-text {
+  color: var(--white);
+  background: #3682fc;
+  border-radius: 13px 13px 3px 13px;
+}
+
+.chat-footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: var(--white);
+  padding: 10px 15px;
+  border-top: 1px solid var(--medium-gray);
+}
+
+.chat-footer .chat-form {
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: var(--white);
+  border-radius: 32px;
+  outline: 1px solid #cccce5;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.06);
+}
+
+.chat-form:focus-within {
+  outline: 2px solid var(--main-primary);
+}
+
+.chat-form .message-input {
+  width: 100%;
+  height: 45px;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  padding: 0 15px;
+  background: none;
+}
+
+.chat-form #send-message {
+  height: 35px;
+  width: 35px;
+  border: none;
+  flex-shrink: 0;
+  color: var(--white);
+  cursor: pointer;
+  background: var(--main-primary);
+  border-radius: 50%;
+  font-size: 1.15rem;
+  transition: 0.2s ease;
+  display: none; /* Hidden by default */
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+}
+
+/* Show the send button only when the input is not empty */
+.chat-form .message-input:valid~#send-message {
+  display: flex;
+}
+
+.chat-form #send-message:hover {
+  background: #0341a6;
+}
+
+
+/* =================================================================== */
+/* 13. Modal Styles (for Deletion and Viewing)
+/* =================================================================== */
+
+/* The semi-transparent layer that covers the entire screen. */
+.modal-overlay {
+  position: fixed; /* Stays fixed even when scrolling. */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(31, 41, 55, 0.7); /* Dark background with 70% opacity. */
+  display: flex;
+  justify-content: center; /* Horizontally centers the content. */
+  align-items: center;    /* Vertically centers the content. */
+  z-index: 2000;          /* Ensures it's on top of everything. */
+  padding: 1rem;
+  animation: fadeIn 0.3s ease-out; /* Smooth fade-in animation. */
+}
+
+/* The modal window itself. */
+.modal-content {
+  background-color: var(--white);
+  padding: 1.5rem; /* Reduced padding for mobile */
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 500px; /* Controls the max width of the modal. */
+  animation: slideUp 0.4s ease-out; /* Smooth slide-up animation. */
+}
+
+/* Title of the modal (e.g., "Confirm Deletion"). */
+.modal-content h3 {
+  margin-top: 0;
+  font-size: 1.5rem; /* Smaller title on mobile */
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Container for the survey response details. */
+.response-details {
+  text-align: left;
+  margin: 1.5rem 0;
+  max-height: 60vh; /* Allows scrolling if the content is too long. */
+  overflow-y: auto;
+  padding-right: 1rem; /* Space for the scrollbar. */
+}
+
+.response-details p {
+  margin: 0.75rem 0;
+  color: var(--text-light);
+  line-height: 1.6;
+  border-bottom: 1px solid var(--medium-gray); /* Separator line. */
+  padding-bottom: 0.75rem;
+}
+
+.response-details p:last-child {
+  border-bottom: none; /* Removes the line from the last item. */
+}
+
+.response-details strong {
+  color: var(--dark-gray);
+  margin-right: 0.5rem;
+  font-weight: 600;
+}
+
+/* We hide the <hr> tag because we are using borders on paragraphs instead. */
+.response-details hr {
+  display: none;
+}
+
+/* Container for the modal action buttons (e.g., "Cancel", "Delete"). */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end; /* Aligns buttons to the right. */
+  margin-top: 2rem;
+  gap: 1rem;
+}
+
+/* Make the confirmation delete button more prominent. */
+.modal-actions .btn-danger {
+  background-color: var(--error-red);
+  color: var(--white);
+}
+
+.modal-actions .btn-danger:hover {
+  background-color: #dc2626; /* Darker red */
+}
+
+
+/* =================================================================== */
+/* 14. Utility Classes
+/* =================================================================== */
+.w-full { width: 100%; }
+.text-center { text-align: center; }
+.mt-4 { margin-top: 1rem; }
+
+/* Keyframe animations for modals */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+
+/* =================================================================== */
+/* 15. Responsive Media Queries
+/* =================================================================== */
+
+/* --- Tablet and Smaller Desktop (up to 992px) --- */
+@media (max-width: 992px) {
+  .charts-grid {
+    grid-template-columns: 1fr; /* Stack charts on top of each other */
+  }
+}
+
+/* --- Mobile Devices (up to 768px) --- */
+@media (max-width: 768px) {
+  .nav-content {
+    flex-wrap: wrap; /* Allow navbar items to wrap */
+    justify-content: center;
+    height: auto;
+    padding: 0.75rem 0;
+  }
+
+  .nav-brand {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .nav-user-section {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .nav-user-email {
+    display: none; /* Hide the email on small screens to save space */
+  }
+
+  .dashboard-main {
+    padding: 1.5rem 0;
+  }
+
+  .main-content {
+    padding: 0 1rem;
+  }
+  
+  .admin-panel-header, .dashboard-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .user-panel-header, .dashboard-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+
+  .admin-panel-header h1, .dashboard-header h1 {
+    margin-bottom: 1rem;
+  }
+
+  .user-panel-header h1, .dashboard-header h1 {
+    margin-bottom: 1rem;
+  }
+}
+
+
+/* --- Chatbot Specific Mobile Styles (up to 520px) --- */
+@media (max-width: 520px) {
+  .chatbot-popup {
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 0;
+    max-width: 100%;
+  }
+
+  .chat-body {
+    height: calc(100% - 110px); /* Adjust height for full screen */
+  }
+}
+/* =================================================================== */
+/* Estilos para el Editor de Base de Conocimiento
+/* =================================================================== */
+
+.editor-card {
+  padding: 2rem;
+}
+
+.editor-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background-color: #eef2ff; /* Fondo azul claro */
+  color: #4338ca; /* Texto azul oscuro */
+  padding: 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.editor-info svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.editor-info p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.editor-textarea {
+  width: 100%;
+  border: 1px solid var(--medium-gray);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  font-family: monospace; /* Fuente monoespaciada para ver mejor el formato */
+  font-size: 0.9rem;
+  line-height: 1.7;
+  background-color: #f9fafb;
+}
+
+.editor-textarea:focus {
+  outline: none;
+  border-color: var(--main-primary);
+  box-shadow: 0 0 0 4px rgba(4, 99, 251, 0.15);
+}
+
+.editor-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.success-message {
+  padding: 0.75rem 1rem;
+  background-color: #dcfce7; /* Fondo verde claro */
+  color: #166534; /* Texto verde oscuro */
+  border-radius: 0.5rem;
+  font-weight: 500;
+}
+
+/* =================================================================== */
+/* Estilos para la Página de Preguntas Frecuentes (FAQ)
+/* =================================================================== */
+.user-panel-container {
+  max-width: 1024px;
+  margin: 2.5rem auto;
+  padding: 0 1rem;
+}
+
+.faq-container { /* */
+  max-width: 900px; /* */
+  margin:  auto; /* */
+}
+
+.faq-category { /* */
+  margin-bottom: 2.5rem; /* */
+}
+
+.faq-category h2 { /* */
+  font-size: 1.75rem; /* */
+  color: var(--main-primary); /* */
+  border-bottom: 2px solid var(--main-primary); /* */
+  padding-bottom: 0.5rem; /* */
+  margin-bottom: 1.5rem; /* */
+}
+
+.faq-subcategory { /* */
+  margin-bottom: 1.5rem; /* */
+}
+
+.faq-subcategory h3 { /* */
+  font-size: 1.25rem; /* */
+  color: var(--dark-gray); /* */
+  margin-bottom: 1rem; /* */
+}
+
+.faq-item { /* */
+  border: 1px solid var(--medium-gray); /* */
+  border-radius: 0.75rem; /* */
+  margin-bottom: 0.5rem; /* */
+  overflow: hidden; /* */
+}
+
+.faq-question { /* */
+  display: flex; /* */
+  justify-content: space-between; /* */
+  align-items: center; /* */
+  width: 100%; /* */
+  padding: 1rem 1.5rem; /* */
+  background-color: var(--white); /* */
+  border: none; /* */
+  cursor: pointer; /* */
+  text-align: left; /* */
+  font-size: 1rem; /* */
+  font-weight: 500; /* */
+}
+
+.faq-question:hover {
+  background-color: var(--white);
+  /* Stronger shadow effect */
+  box-shadow: 0 6px 15px -5px rgba(0, 0, 0, 0.1), 0 0 0 4px rgba(4, 99, 251, 0.25); /* Increased blur and spread, slightly more opaque border highlight */
+  transform: translateY(-3px); /* Lifts the item slightly */
+}
+
+/* Add this to .faq-item for smooth transition on transform */
+.faq-item {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Add transition for transform and box-shadow */
+}
+
+.faq-chevron { /* */
+  transition: transform 0.3s ease; /* */
+  color: var(--text-light); /* */
+}
+
+.faq-chevron.open { /* */
+  transform: rotate(180deg); /* */
+}
+
+.faq-answer { /* */
+  padding: 1.5rem; /* */
+  background-color: var(--light-gray); /* */
+  border-top: 1px solid var(--medium-gray); /* */
+}
+
+.faq-answer p { /* */
+  margin: 0; /* */
+  line-height: 1.6; /* */
+}
+
+.loading-indicator { /* */
+  text-align: center; /* */
+  padding: 4rem; /* */
+  font-size: 1.25rem; /* */
+  color: var(--text-light); /* */
+}
