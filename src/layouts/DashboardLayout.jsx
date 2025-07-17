@@ -244,9 +244,9 @@ export default function DashboardLayout() {
             {currentUser?.role === 'admin' ? (
               <>
                 <Link to="/admin/knowledge" className="nav-link">Chatbot</Link>
-                <Link to="/admin/surveys" className="nav-link">Encuestas</Link>
+                <Link to="/admin/surveys" className="nav-link">Feedback</Link>
                 <Link to="/admin/faqs" className="nav-link">FAQs</Link> 
-                <Link to="/admin" className="nav-link">Usuarios</Link>
+                <Link to="/admin" className="nav-link">Users</Link>
               </>
             ) : (
               <Link to="/faqs" className="nav-link">Preguntas Frecuentes</Link>
