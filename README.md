@@ -154,7 +154,7 @@ Guía para el personal hospitalario encargado de gestionar contenidos y métrica
 
 En el **Dashboard** se muestran:
 
-- Nivel de satisfacción (escala 1–5).  
+- Nivel de satisfacción (escala 1–7).  
 - Claridad percibida.  
 
 Esto permite identificar mejoras y agregar contenidos más útiles.
