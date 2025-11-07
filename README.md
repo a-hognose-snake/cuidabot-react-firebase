@@ -3,7 +3,9 @@
 Este repositorio contiene el código fuente y la documentación del prototipo de una aplicación web con un **asistente conversacional (chatbot)**, diseñado para apoyar a los cuidadores informales de pacientes egresados del **Hospital Clínico Félix Bulnes (HCFB)**.
 
 Transformación Digital en Salud Pública: Propuesta de Implementación de Chatbot para el Apoyo a Cuidadores en Hospital Félix Bulnes
+
 Tesis para optar al título de Ingeniero en Tecnologías de la Información y Comunicaciones
+
 Alumna: Josefina Figueroa
 
 ---
